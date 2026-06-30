@@ -69,6 +69,7 @@ namespace decouverte.liste
 
     internal class ListeUtil
     {
+        // Verrifie l'équivalence des valeurs entre 2 tableau
         public static bool Eq(Liste? l1, Liste? l2)
         {
             bool Eq = true;
@@ -84,6 +85,8 @@ namespace decouverte.liste
             }
             return Eq;
         }
+        
+        // Affiche et formate la liste entrée en parametre
         public static void PrintListe(Liste? l)
         {
             Console.Write('[');
@@ -99,7 +102,7 @@ namespace decouverte.liste
             Console.Write("]\n");
         }
 
-        //Voir premier element
+        //Voir premier element -1 si null
         internal static int Peek(ref Liste? liste) => liste == null? -1 : liste.Val;
         
         

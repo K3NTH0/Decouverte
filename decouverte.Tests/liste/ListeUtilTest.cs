@@ -10,8 +10,9 @@ public class ListeUtilTest
     /*
      * Tests de la fonction Eq (equals)
      */
+    [Category("Eq")]
     [Test]
-    public void l1IsEqualTol2With2ListeInside()
+    public void L1IsEqualTol2With2ListeInside()
     {
         Liste l1 = new Liste(4, new Liste(9, null));
         Liste l2 = new Liste(4, new Liste(9, null));
@@ -21,8 +22,9 @@ public class ListeUtilTest
         Assert.That(result, Is.EqualTo(expected));
     }
     
+    [Category("Eq")]
     [Test]
-    public void l1IsNotEqualTol2With2ListeInside()
+    public void L1IsNotEqualTol2With2ListeInside()
     {
         Liste l1 = new Liste(5, new Liste(7, null));
         Liste l2 = new Liste(4, new Liste(9, null));
@@ -32,8 +34,9 @@ public class ListeUtilTest
         Assert.That(result, Is.EqualTo(expected));
     }
     
+    [Category("Eq")]
     [Test]
-    public void l1IsNotEqualTol2With2SizeDifferent()
+    public void L1IsNotEqualTol2With2SizeDifferent()
     {
         Liste l1 = new Liste(4, new Liste(9, null));
         Liste l2 = new Liste(4, null);
@@ -43,8 +46,9 @@ public class ListeUtilTest
         Assert.That(result, Is.EqualTo(expected));
     }
 
+    [Category("Eq")]
     [Test]
-    public void l1IsEqualTol2WithSize1()
+    public void L1IsEqualTol2WithSize1()
     {
         Liste l1 = new Liste(255, null);
         Liste l2 = new Liste(255, null);
@@ -55,8 +59,77 @@ public class ListeUtilTest
     }
     
     /*
+     * Tests fonction Peek
+     */
+    [Category("Peek")]
+    [Test]
+    public void FirstValIs4AndSizeIs1()
+    {
+        Liste l = new Liste(4, null);
+
+        int expected = 4;
+        int actual = ListeUtil.Peek(ref l);
+        
+        Assert.That(actual, Is.EqualTo(expected));
+    }
+    
+    [Category("Peek")]
+    [Test]
+    public void FirstValIs2AndSizeIs3()
+    {
+        Liste l = new Liste(2, new Liste(7, new Liste(0, null)));
+
+        int expected = 2;
+        int actual = ListeUtil.Peek(ref l);
+        
+        Assert.That(actual, Is.EqualTo(expected));
+    }
+    
+    [Category("Peek")]
+    [Test]
+    public void ListeIsNull()
+    {
+        Liste l = null;
+
+        int expected = -1;
+        int actual = ListeUtil.Peek(ref l);
+        
+        Assert.That(actual, Is.EqualTo(expected));
+    }
+    
+    /*
+     * Tests de la fonction Push
+     */
+    [Category("Push")]
+    [Test]
+    public void AjoutDeVal2DevantVal1Size2()
+    {
+        Liste lInitiale = new Liste(1, new Liste(3, null));
+        Liste expected = new Liste(2, new Liste(1, new Liste(3, null)));
+        int valAjoutée = 2;
+        
+        ListeUtil.Push(ref lInitiale, valAjoutée);
+        
+        Assert.That(ListeUtil.Eq(lInitiale, expected), Is.True);
+    }
+
+    [Category("Push")]
+    [Test]
+    public void AjoutAUneListeNull()
+    {
+        Liste lInitiale = null;
+        Liste expected = new Liste(1, null);
+        int valAjoutée = 1;
+        
+        ListeUtil.Push(ref lInitiale, valAjoutée);
+        Assert.That(ListeUtil.Eq(lInitiale, expected), Is.True);
+    }
+    
+    
+    /*
      * Tests de la fonction Add
      */
+    [Category("Add")]
     [Test]
     public void AddUneListeALaFinDUneListeVide()
     {
@@ -67,6 +140,7 @@ public class ListeUtilTest
         Assert.That(ListeUtil.Eq(l, expected), Is.True);
     }
     
+    [Category("Add")]
     [Test]
     public void AddUneListeALaFinDUneChaineDe2Liste()
     {
@@ -78,6 +152,7 @@ public class ListeUtilTest
         
     }
 
+    [Category("Add")]
     [Test]
     public void AddUneListeA1Liste()
     {
