@@ -69,6 +69,21 @@ namespace decouverte.liste
 
     internal class ListeUtil
     {
+        public static bool Eq(Liste? l1, Liste? l2)
+        {
+            bool Eq = true;
+            if (Size(l1) ==  Size(l2)){
+                for (int i = 0; i < Size(l1); i++)
+                {
+                    if (l1.Val != l2.Val) Eq = false;
+                }
+            }
+            else
+            {
+                Eq = false;
+            }
+            return Eq;
+        }
         public static void PrintListe(Liste? l)
         {
             Console.Write('[');
@@ -121,11 +136,11 @@ namespace decouverte.liste
         {
             Liste? temp = l;
             Liste nouv = new Liste(val, null);
-            if (temp == null)
+            if (l == null)
             {
-/*
-                temp = nouv;
-*/
+
+                l = nouv;
+
             }
             else
             {
