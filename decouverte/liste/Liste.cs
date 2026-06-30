@@ -1,16 +1,15 @@
-﻿
-
+﻿#pragma warning disable CS8602 // Dereference of a possibly null reference.
 namespace decouverte.liste
 {
     internal class Liste
     {
-        public int val;
-        public Liste? suivant;
+        public int Val;
+        public Liste? Suivant;
         
         public Liste(int val, Liste? suivant)
         {
-            this.val = val;
-            this.suivant = suivant;
+            this.Val = val;
+            this.Suivant = suivant;
         }
     }
 
@@ -26,14 +25,14 @@ namespace decouverte.liste
             // Utiliser pour randomiser la position a viser dans la chaine de liste
             Random rand = new Random();
             int pos = rand.Next(1,5);
-            int avantDernierElem = -1;
+            int avantDernierElem;
             
             Liste? liste = null;
             ListeUtil.Push(ref liste, 10);
             ListeUtil.Push(ref liste, 9);
             ListeUtil.Push(ref liste, 8);
             ListeUtil.Push(ref liste, 7);
-
+            
             ListeUtil.PrintListe(liste);
             Console.WriteLine($"Le premier element de la liste est {ListeUtil.Peek(ref liste)}");
             
@@ -43,8 +42,8 @@ namespace decouverte.liste
             Console.WriteLine("POP");
             ListeUtil.PrintListe(liste);
 
-            avantDernierElem = ListeUtil.ElemAtPosition(ref liste, ListeUtil.Size(liste) - 1).val;
-            ListeUtil.Add(ref liste,avantDernierElem );
+            avantDernierElem = ListeUtil.ElemAtPosition(ref liste, ListeUtil.Size(liste)).Val;
+            ListeUtil.Add(ref liste,avantDernierElem+1);
             Console.WriteLine("\nRajout de 11");
             ListeUtil.PrintListe(liste);
             
@@ -70,23 +69,23 @@ namespace decouverte.liste
 
     internal class ListeUtil
     {
-        public static void PrintListe(Liste l)
+        public static void PrintListe(Liste? l)
         {
             Console.Write('[');
             while(l != null)
             {
-                Console.Write(l.val);
-                if(l.suivant != null)
+                Console.Write(l.Val);
+                if(l.Suivant != null)
                 {
                     Console.Write(", ");
                 }
-                l = l.suivant;
+                l = l.Suivant;
             }
             Console.Write("]\n");
         }
 
         //Voir premier element
-        internal static int Peek(ref Liste? liste) => liste.val;
+        internal static int Peek(ref Liste? liste) => liste == null? -1 : liste.Val;
         
         
         //Ajouter une valeur au début
@@ -100,8 +99,8 @@ namespace decouverte.liste
         //Retirer le premier élément et retourner l'élément retiré
         internal static int Pop(ref Liste? liste)
         {
-            int val = liste.val;
-            liste = liste.suivant;
+            int val = liste == null? -1 : liste.Val;
+            liste = liste == null? null:liste.Suivant;
             return val;
         }
         
@@ -111,7 +110,7 @@ namespace decouverte.liste
             int taille = 0;
             while (l != null)
             {
-                l = l.suivant;
+                l = l.Suivant;
                 taille++;
             }
             return taille;
@@ -120,20 +119,38 @@ namespace decouverte.liste
         //Ajouter à la fin
         internal static void Add(ref Liste? l, int val)
         {
-            Liste temp = l;
-            while (temp.suivant != null)
+            Liste? temp = l;
+            Liste nouv = new Liste(val, null);
+            if (temp == null)
             {
-                temp = temp.suivant;
+/*
+                temp = nouv;
+*/
             }
-            temp.suivant = new Liste(val, null);
+            else
+            {
+                while (temp.Suivant != null)
+                {
+                    temp = temp.Suivant;
+                }
+
+                temp.Suivant = nouv;
+            }
         }
         // Trouver position 
-        internal static Liste ElemAtPosition(ref Liste? l, int pos)
+        internal static Liste? ElemAtPosition(ref Liste? l, int pos)
         {
-            Liste temp = l;
-            for (int i = 0; i < pos-1; i++)
+            Liste? temp = l;
+            if (temp == null)
             {
-                temp = temp.suivant;
+                
+            }
+            else
+            {
+                for (int i = 0; i < pos-1; i++)
+                {
+                    if (temp != null) temp = temp.Suivant;
+                }
             }
             return temp;
         }
@@ -145,44 +162,43 @@ namespace decouverte.liste
             // {
             //     temp = temp.suivant;
             // }
-            return ElemAtPosition(ref l,pos).val;
+            return ElemAtPosition(ref l,pos).Val;
         }
         
         //Insérer à l'élément de position
         internal static void Insert(ref Liste? l, int pos, int val)
         {
             //Liste temp = l;
-            Liste temp = ElemAtPosition(ref l, pos);
-            Liste nouv = new Liste(val, null);
+            Liste? temp = ElemAtPosition(ref l, pos);
             // for (int i = 0; i < pos-1; i++)
             // {
             //    temp = temp.suivant; 
             // }
 
-            if (temp.suivant != null)
+            if (temp.Suivant != null)
             {
-                temp.val = val;
+                temp.Val = val;
             }
             else
             {
-                temp.val = val;
-                temp.suivant = null;
+                temp.Val = val;
+                temp.Suivant = null;
             }
         }
         
         //Retirer le dernier élément
         internal static int Remove(ref Liste? l)
         {
-            Liste temp = l;
+            Liste? temp = l;
             int val=-1;
-            if (temp != null && temp.suivant != null)
+            if (temp != null && temp.Suivant != null)
             {
-                while (temp.suivant.suivant != null)
+                while (temp.Suivant.Suivant != null)
                 {
-                    temp = temp.suivant;
+                    temp = temp.Suivant;
                 }
-                val = temp.suivant.val;
-                temp.suivant = null;
+                val = temp.Suivant.Val;
+                temp.Suivant = null;
             }
             return val;
         }
@@ -190,17 +206,17 @@ namespace decouverte.liste
         //Retirer l'élément de position pos
         internal static int RemoveAt(ref Liste? l, int pos)
         {
-            Liste temp = l;
-            int val = temp.val;
+            Liste? temp = l;
+            int val = temp.Val;
             if (pos > 1)
             {
                 for (int i = 0; i < pos-2; i++)
                 {
                 
-                    temp = temp.suivant;
+                    temp = temp.Suivant;
                 }
-                val = temp.suivant.val;
-                temp.suivant = temp.suivant.suivant;
+                val = temp.Suivant.Val;
+                temp.Suivant = temp.Suivant.Suivant;
             }
             else
             {
