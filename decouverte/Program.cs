@@ -1,12 +1,15 @@
 ﻿using decouverte;
 using decouverte.liste;
+using decouverte.Poo.vaisseau;
 
 Console.WriteLine("Découvert");
 
 IItem[] item = {
     new Test(),
     new DecouverteString(),
-    new MainList()
+    new MainList(),
+    new Episode1(),
+    new Episode2()
 };
 
 for (int i = 0; i < item.Length; i++)
