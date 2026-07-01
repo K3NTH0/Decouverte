@@ -11,6 +11,7 @@ namespace decouverte.liste
             this.Val = val;
             this.Suivant = suivant;
         }
+        
     }
 
     internal class MainList : IItem
@@ -42,7 +43,7 @@ namespace decouverte.liste
             Console.WriteLine("POP");
             ListeUtil.PrintListe(liste);
 
-            avantDernierElem = ListeUtil.ElemAtPosition(ref liste, ListeUtil.Size(liste)).Val;
+            avantDernierElem = ListeUtil.TrouvePosition(ref liste, ListeUtil.Size(liste)).Val;
             ListeUtil.Add(ref liste,avantDernierElem+1);
             Console.WriteLine("\nRajout de 11");
             ListeUtil.PrintListe(liste);
@@ -72,18 +73,18 @@ namespace decouverte.liste
         // Verrifie l'équivalence des valeurs entre 2 tableau
         public static bool Eq(Liste? l1, Liste? l2)
         {
-            bool Eq = true;
+            bool eq = true;
             if (Size(l1) ==  Size(l2)){
                 for (int i = 0; i < Size(l1); i++)
                 {
-                    if (l1.Val != l2.Val) Eq = false;
+                    if (l1.Val != l2.Val) eq = false;
                 }
             }
             else
             {
-                Eq = false;
+                eq = false;
             }
-            return Eq;
+            return eq;
         }
         
         // Affiche et formate la liste entrée en parametre
@@ -104,7 +105,7 @@ namespace decouverte.liste
 
         //Voir premier element -1 si null
         internal static int Peek(ref Liste? liste) => liste == null? -1 : liste.Val;
-        
+        //ArgumentNullException.ThrowIfNull(this.ExitButton);
         
         //Ajouter une valeur au début
         internal static void Push( ref Liste? liste, int val)
@@ -115,9 +116,9 @@ namespace decouverte.liste
 
         
         //Retirer le premier élément et retourner l'élément retiré
-        internal static int Pop(ref Liste? liste)
+        internal static int? Pop(ref Liste? liste)
         {
-            int val = liste == null? -1 : liste.Val;
+            int? val = liste == null? null : liste.Val;
             liste = liste == null? null:liste.Suivant;
             return val;
         }
@@ -125,6 +126,7 @@ namespace decouverte.liste
         //Obtenir la taille de la liste
         internal static int Size(Liste? l)
         {
+            // throw new NotImplementedException();
             int taille = 0;
             while (l != null)
             {
@@ -141,9 +143,7 @@ namespace decouverte.liste
             Liste nouv = new Liste(val, null);
             if (l == null)
             {
-
                 l = nouv;
-
             }
             else
             {
@@ -156,7 +156,7 @@ namespace decouverte.liste
             }
         }
         // Trouver position 
-        internal static Liste? ElemAtPosition(ref Liste? l, int pos)
+        internal static Liste? TrouvePosition(ref Liste? l, int pos)
         {
             Liste? temp = l;
             if (temp == null)
@@ -180,18 +180,14 @@ namespace decouverte.liste
             // {
             //     temp = temp.suivant;
             // }
-            return ElemAtPosition(ref l,pos).Val;
+            return TrouvePosition(ref l,pos).Val;
         }
         
         //Insérer à l'élément de position
         internal static void Insert(ref Liste? l, int pos, int val)
         {
             //Liste temp = l;
-            Liste? temp = ElemAtPosition(ref l, pos);
-            // for (int i = 0; i < pos-1; i++)
-            // {
-            //    temp = temp.suivant; 
-            // }
+            Liste? temp = TrouvePosition(ref l, pos);
 
             if (temp.Suivant != null)
             {
@@ -205,10 +201,10 @@ namespace decouverte.liste
         }
         
         //Retirer le dernier élément
-        internal static int Remove(ref Liste? l)
+        internal static int? Remove(ref Liste? l)
         {
             Liste? temp = l;
-            int val=-1;
+            int? val;
             if (temp != null && temp.Suivant != null)
             {
                 while (temp.Suivant.Suivant != null)
@@ -218,29 +214,37 @@ namespace decouverte.liste
                 val = temp.Suivant.Val;
                 temp.Suivant = null;
             }
+            else
+            {
+                val = Pop(ref l);
+            }
             return val;
         }
         
         //Retirer l'élément de position pos
-        internal static int RemoveAt(ref Liste? l, int pos)
+        internal static int? RemoveAt(ref Liste? l, int pos)
         {
-            Liste? temp = l;
-            int val = temp.Val;
-            if (pos > 1)
+            int? val = null;
+            if (pos <= Size(l))
             {
-                for (int i = 0; i < pos-2; i++)
+                Liste? temp = l;
+                val = temp.Val;
+                if (pos > 1)
                 {
+                    for (int i = 0; i < pos-2; i++)
+                    {
                 
-                    temp = temp.Suivant;
+                        temp = temp.Suivant;
+                    }
+                    val = temp.Suivant.Val;
+                    temp.Suivant = temp.Suivant.Suivant;
                 }
-                val = temp.Suivant.Val;
-                temp.Suivant = temp.Suivant.Suivant;
+                else
+                {
+                    Pop(ref l);
+                }
+
             }
-            else
-            {
-                Pop(ref l);
-            }
-            
             return val;
         }
     }

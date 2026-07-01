@@ -125,6 +125,9 @@ public class ListeUtilTest
         Assert.That(ListeUtil.Eq(lInitiale, expected), Is.True);
     }
     
+    /*
+     * Tests de la fonction Pop TODO
+     */
     
     /*
      * Tests de la fonction Add
@@ -165,5 +168,88 @@ public class ListeUtilTest
         
     }
 
+    /*
+     * Tests de la fonction ElemAtPosition TODO
+     */
+    
+    /*
+     * Tests de la fonction Read TODO
+     */
+    
+    /*
+     * Tests de la fonction Insert TODO
+     */
+    
+    /*
+     * Tests de la fonction Remove 
+     */
+    [Category("Remove")]
+    [Test]
+    public void RemoveLastSize2()
+    {
+        Liste l = new Liste(2, new Liste(5, null));
+        Liste expected = new Liste(2, null);
+        int expectedValue = 5;
+        int? deletedValue = ListeUtil.Remove(ref l);
+        
+        Assert.That(ListeUtil.Eq(l,expected));
+        Assert.That(deletedValue, Is.EqualTo(expectedValue));
+    }
+    
+    [Category("Remove")]
+    [Test]
+    public void RemoveSize1()
+    {
+        Liste l = new Liste(2, null);
+        Liste expected = null;
+        int expectedValue = 2;
+        int? deletedValue = ListeUtil.Remove(ref l);
+        
+        Assert.That(ListeUtil.Eq(l,expected));
+        Assert.That(deletedValue, Is.EqualTo(expectedValue));
+    }
+    
+    /*
+     * Tests de la fonction RemoveAt 
+     */
+    [Category("RemoveAt")]
+    [Test]
+    public void RemoveAtPos2Size3()
+    {
+        Liste l = new Liste(2, new Liste(5, new Liste(3, null)));
+        Liste expected = new Liste(2, new Liste(3, null));
+        int expectedValue = 5;
+        int? deletedValue = ListeUtil.RemoveAt(ref l,2);
+        
+        Assert.That(ListeUtil.Eq(l,expected));
+        Assert.That(deletedValue, Is.EqualTo(expectedValue));
+    }
+    
+    [Category("RemoveAt")]
+    [Test]
+    public void RemoveAtPos1Size3()
+    {
+        Liste l = new Liste(2, new Liste(5, new Liste(3, null)));
+        Liste expected = new Liste(5, new Liste(3, null));
+        int expectedValue = 2;
+        int? deletedValue = ListeUtil.RemoveAt(ref l,1);
+        
+        Assert.That(ListeUtil.Eq(l,expected));
+        Assert.That(deletedValue, Is.EqualTo(expectedValue));
+    }
+    
+    [Category("RemoveAt")]
+    [Test]
+    public void RemoveAtPos2Size1()
+    {
+        Liste l = new Liste(2, null);
+        Liste? expected = l;
+        int? expectedValue = null;
+        int? deletedValue = ListeUtil.RemoveAt(ref l,2);
+        
+        Assert.That(ListeUtil.Eq(l,expected));
+        Assert.That(deletedValue, Is.EqualTo(expectedValue));
+    }
+    
     
 }
